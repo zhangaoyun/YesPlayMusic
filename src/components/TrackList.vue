@@ -52,6 +52,7 @@
       <div v-show="type !== 'cloudDisk'" class="item" @click="copyLink">{{
         $t('contextMenu.copyUrl')
       }}</div>
+      <div class="item" @click="copySongName">复制歌曲名称</div>
       <div
         v-if="extraContextMenuItem.includes('removeTrackFromCloudDisk')"
         class="item"
@@ -276,6 +277,15 @@ export default {
       this.$copyText(
         `https://music.163.com/song?id=${this.rightClickedTrack.id}`
       )
+        .then(() => {
+          this.showToast(locale.t('toast.copied'));
+        })
+        .catch(err => {
+          this.showToast(`${locale.t('toast.copyFailed')}${err}`);
+        });
+    },
+    copySongName() {
+      this.$copyText(`${this.rightClickedTrack.name}`)
         .then(() => {
           this.showToast(locale.t('toast.copied'));
         })
